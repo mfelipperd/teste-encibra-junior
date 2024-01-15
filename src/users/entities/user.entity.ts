@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Task } from 'src/tasks/entities/task.entity';
 
 @Entity()
 export class User {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -16,5 +16,5 @@ export class User {
   password: string;
 
   @OneToMany(() => Task, (task) => task.user)
-  tasks: Task[];
+  tasks: Task[] | null;
 }

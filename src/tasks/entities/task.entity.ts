@@ -1,8 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 @Entity()
 export class Task {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -11,11 +11,11 @@ export class Task {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   term: Date | null;
 
   @Column()
-  finshed: boolean;
+  finished: boolean;
 
   @ManyToOne(() => User, (user) => user.tasks)
   user: User;

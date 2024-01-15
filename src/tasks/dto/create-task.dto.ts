@@ -7,7 +7,7 @@ export class CreateTaskDto {
 
   term: Date | null;
 
-  fineshed: boolean;
+  finished: boolean;
 
   user: User;
 }

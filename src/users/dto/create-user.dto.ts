@@ -7,5 +7,5 @@ export class CreateUserDto {
 
   password: string;
 
-  tasks: Task[];
+  tasks: Task[] | null;
 }
