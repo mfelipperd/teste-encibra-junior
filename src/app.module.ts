@@ -4,16 +4,25 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './tasks/tasks.module';
+import { AuthModule } from './auth.module';
+import { User } from './users/entities/user.entity';
+import { Task } from './tasks/entities/task.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'memory',
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'root',
+      password: 'root',
+      database: 'todolist',
+      entities: [Task, User],
       synchronize: true,
     }),
     UsersModule,
     TasksModule,
+    // AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
