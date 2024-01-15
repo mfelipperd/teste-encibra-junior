@@ -7,18 +7,18 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthService) {
+  constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'your-secret-key', // Deve ser a mesma chave usada para assinar o token
+      secretOrKey: 'your-secret-key', // Use a mesma chave secreta que você definiu no JwtModule
     });
   }
 
-  async validate(payload: any): Promise<any> {
-    // Aqui você pode adicionar lógica de validação, por exemplo, verificar se o usuário existe no banco de dados
-    // Se o usuário não for encontrado, você pode lançar UnauthorizedException
-
-    // Exemplo simples: retornando o ID do usuário
-    return { userId: payload.sub, username: payload.username };
+  async validate(payload: any) {
+    const user = await this.authService.validateUserById(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
   }
 }

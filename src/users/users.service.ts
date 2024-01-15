@@ -4,36 +4,37 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,
+    private jwtService: JwtService,
   ) {}
-  create(createUserDto: CreateUserDto) {
-    //return this.userRepo.save(createUserDto);
-    // Validação do nome
+  async create(createUserDto: CreateUserDto) {
     if (!createUserDto.name || createUserDto.name.trim().length < 3) {
       throw new BadRequestException(
         'O nome do usuário deve ter pelo menos 3 caracteres.',
       );
     }
 
-    // Validação do e-mail
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!createUserDto.email || !emailRegex.test(createUserDto.email)) {
       throw new BadRequestException('Informe um endereço de e-mail válido.');
     }
 
-    // Validação da senha
     if (!createUserDto.password || createUserDto.password.length < 6) {
       throw new BadRequestException(
         'A senha deve ter pelo menos 6 caracteres.',
       );
     }
+    const newUser = await this.userRepo.save(createUserDto);
+    const payload = { sub: newUser.id };
+    const accessToken = this.jwtService.sign(payload);
 
-    return this.userRepo.save(createUserDto);
+    return { user: newUser, token: accessToken };
   }
 
   findAll() {
