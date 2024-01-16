@@ -20,7 +20,7 @@ const RegisterPage: React.FC = () => {
         console.log(response)
       if (response?.data) {
         handleChangeData(response.data)
-        router.push('/tasks');
+        router.push('/dashboard');
       } else {
         console.error('Erro ao cadastrar');
       }

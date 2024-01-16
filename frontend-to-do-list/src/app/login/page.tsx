@@ -1,27 +1,26 @@
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import { login } from '@/api/crud';
+import { useUserContext } from '@/context/user/user.context';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { handleChangeData } = useUserContext();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('/api/login', { email, password });
-
-      // Verificação de sucesso (substitua por sua lógica real)
-      if (response.data.success) {
-        // Redirecionar para a página da lista de tarefas após o login bem-sucedido
-        router.push('/tasks');
+      const response = await login({ email, password });
+      console.log(response);
+      if (response?.data.accessToken) {
+        handleChangeData(response.data.user)
+        router.push('/dashboard');
       } else {
-        // Exibir mensagem de erro ou lidar com falha de autenticação
         console.error('Credenciais inválidas');
       }
     } catch (error) {
-      // Lidar com erros da API
       console.error('Erro ao autenticar:');
     }
   };

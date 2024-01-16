@@ -57,3 +57,12 @@ export async function remove(id: string) {
   }
 }
 
+export async function login(data:any) {
+  try{
+    const response = await api.post('/users/login', data)
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+}
+
