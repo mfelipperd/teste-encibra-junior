@@ -1,29 +1,30 @@
-// pages/register.tsx
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import { create, getAll } from '@/api/crud';
+import { useUserContext } from '@/context/user/user.context';
 
 const RegisterPage: React.FC = () => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const { handleChangeData } = useUserContext()
+  
   const handleRegister = async () => {
+    event?.preventDefault()
+    const data = {name, email, password}
+    
     try {
-      const response = await axios.post('/api/register', { name, email, password });
-
-      // Verificação de sucesso (substitua por sua lógica real)
-      if (response.data.success) {
-        // Redirecionar para a página da lista de tarefas após o registro bem-sucedido
+        const response = await create(data);
+        console.log(response)
+      if (response?.data) {
+        handleChangeData(response.data)
         router.push('/tasks');
       } else {
-        // Exibir mensagem de erro ou lidar com falha de registro
         console.error('Erro ao cadastrar');
       }
     } catch (error) {
-      // Lidar com erros da API
       console.error('Erro ao cadastrar:',);
     }
   };
@@ -56,7 +57,7 @@ const RegisterPage: React.FC = () => {
           />
           <div className="flex justify-between items-center">
             <button
-              type="button"
+              type="submit"
               onClick={handleRegister}
               className="bg-green-500 text-white p-2 rounded hover:bg-green-600 w-full"
             >
