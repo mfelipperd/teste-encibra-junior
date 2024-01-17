@@ -4,9 +4,12 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './tasks/tasks.module';
-import { AuthModule } from './auth.module';
 import { User } from './users/entities/user.entity';
 import { Task } from './tasks/entities/task.entity';
+import { JwtModule } from '@nestjs/jwt';
+import * as crypto from 'crypto';
+
+export const secretKey = crypto.randomBytes(32).toString('hex');
 
 @Module({
   imports: [
@@ -21,8 +24,11 @@ import { Task } from './tasks/entities/task.entity';
       synchronize: true,
     }),
     UsersModule,
+    JwtModule.register({
+      secret: secretKey,
+      signOptions: { expiresIn: '1d' },
+    }),
     TasksModule,
-    // AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

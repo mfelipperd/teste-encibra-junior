@@ -9,5 +9,7 @@ export class CreateTaskDto {
 
   finished: boolean;
 
+  priority: number;
+
   user: User;
 }

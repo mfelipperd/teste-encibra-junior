@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Repository } from 'typeorm';
@@ -17,18 +17,49 @@ export class TasksService {
   }
 
   findAll() {
-    return this.taskRepo.find();
+    return this.taskRepo.find({ relations: ['user'] });
   }
 
   findOne(id: string) {
     return this.taskRepo.findOneBy({ id });
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return this.taskRepo.update(id, updateTaskDto);
+  // findByUser(id: string) {
+  //   return this.taskRepo.findOne()
+  // }
+
+  // update(id: string, updateTaskDto: UpdateTaskDto) {
+  //   return this.taskRepo.update(id, updateTaskDto);
+  // }
+
+  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    const existingTask = await this.taskRepo.findOne({ where: { id } });
+    console.log(id);
+
+    if (!existingTask) {
+      throw new NotFoundException('Task not found');
+    }
+
+    // Faça as atualizações necessárias no objeto da tarefa
+    if (updateTaskDto.title) {
+      existingTask.title = updateTaskDto.title;
+    }
+
+    if (updateTaskDto.description) {
+      existingTask.description = updateTaskDto.description;
+    }
+
+    if (updateTaskDto.finished !== undefined) {
+      existingTask.finished = updateTaskDto.finished;
+    }
+
+    // Salve as alterações no banco de dados
+    await this.taskRepo.save(existingTask);
+
+    return existingTask;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.taskRepo.delete(id);
   }
 }

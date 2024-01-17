@@ -1,10 +1,17 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
+import { secretKey } from 'src/app.module';
 
 @Injectable()
 export class UsersService {
@@ -13,6 +20,37 @@ export class UsersService {
     private userRepo: Repository<User>,
     private jwtService: JwtService,
   ) {}
+
+  async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
+    const { email, password } = loginDto;
+
+    const user = await this.userRepo.findOne({
+      where: { email },
+      relations: ['tasks'],
+    });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    function validationPassword(password) {
+      if (user.password === password) return true;
+      return false;
+    }
+    const isPasswordValid = validationPassword(password);
+
+    if (!isPasswordValid || !user) {
+      throw new UnauthorizedException('Credenciais inválidas');
+    }
+
+    const payload = { username: user.email, sub: user.id };
+    const accessToken = this.jwtService.sign(
+      { data: payload },
+      { secret: secretKey },
+    );
+    const result = { accessToken, user };
+    return result;
+  }
+
   async create(createUserDto: CreateUserDto) {
     if (!createUserDto.name || createUserDto.name.trim().length < 3) {
       throw new BadRequestException(
@@ -31,10 +69,12 @@ export class UsersService {
       );
     }
     const newUser = await this.userRepo.save(createUserDto);
-    const payload = { sub: newUser.id };
-    const accessToken = this.jwtService.sign(payload);
-
-    return { user: newUser, token: accessToken };
+    const payload = { username: newUser.email, sub: newUser.id };
+    const accessToken = this.jwtService.sign(
+      { data: payload },
+      { secret: secretKey },
+    );
+    return { newUser, accessToken };
   }
 
   findAll() {
@@ -42,7 +82,10 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    return this.userRepo.findOneBy({ id });
+    return this.userRepo.findOne({
+      where: { id },
+      relations: ['tasks'],
+    });
   }
 
   findOneByName(name: string) {
