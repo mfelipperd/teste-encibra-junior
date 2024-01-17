@@ -2,6 +2,7 @@
 import React, { ReactNode, useCallback, useState, createContext, useContext } from "react";
 
 export interface Task {
+    id:string;
     title: string;
     description: string;
     finished: boolean;
@@ -21,6 +22,7 @@ export interface Task {
 
   export const TaskProvider = ({children}:TaskProviderProps) => {
     const [task, setTask] = useState<Task>({
+        id:'',
         title:'',
         description:'',
         finished:false,

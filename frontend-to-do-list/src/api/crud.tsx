@@ -13,7 +13,7 @@ export async function getAll() {
 
 export async function getOne(id: string) {
   try {
-    const response = await axios.get(`/users/${id}`);
+    const response = await api.get(`/users/${id}`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -30,7 +30,6 @@ export async function getByName(name: string) {
 }
 
 export async function create(data: any) {
-    console.log(data)
   try {
     const response = await api.post('/users', data);
     return response
@@ -68,7 +67,7 @@ export async function login(data:any) {
 
 export async function updateTask(id: string, data: any) {
   try {
-    const response = await axios.put(`/task/${id}`, data);
+    const response = await api.patch(`/tasks/${id}`, data);
     return response.data;
   } catch (error) {
     console.log(error);

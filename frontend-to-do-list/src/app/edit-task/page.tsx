@@ -1,8 +1,8 @@
 // EditTask.tsx
 'use client'
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import NavigationBar from '@/components/navbar';
-import { TaskProvider, useTaskContext } from '@/context/task/task.context';
+import { useTaskContext } from '@/context/task/task.context';
 import TaskForm from '@/components/task-form';
 
 

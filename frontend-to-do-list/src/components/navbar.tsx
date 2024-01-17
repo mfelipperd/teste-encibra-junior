@@ -1,11 +1,10 @@
 'use client'
 import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
-//import { UserContext } from '../contexts/UserContext';
+import Link from 'next/link';
 
 const NavigationBar: React.FC = () => {
   const router = useRouter();
-  //const { user, logout } = useContext(UserContext);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -15,14 +14,16 @@ const NavigationBar: React.FC = () => {
   return (
     <div className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo ou Título */}
-        <div>
+        <Link href={'/dashboard'}>
           <h1 className="text-xl font-bold">Logo da Empresa</h1>
-        </div>
-
-        {/* Botões de Navegação */}
+        </Link>
         <div className="hidden md:flex items-center space-x-4">
-          {/* Botão Histórico de Tarefas */}
+        <button
+            onClick={() => router.push('/create-task')}
+            className="hover:underline"
+          >
+            Adicionar nova tarefa
+          </button>
           <button
             onClick={() => router.push('/tasks')}
             className="hover:underline"
@@ -36,8 +37,6 @@ const NavigationBar: React.FC = () => {
             </button>
           )}
         </div>
-
-        {/* Menu Sanduíche para Dispositivos Móveis */}
         <div className="md:hidden">
           <button
             onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
@@ -47,8 +46,6 @@ const NavigationBar: React.FC = () => {
           </button>
         </div>
       </div>
-
-      {/* Menu Sanduíche (Responsivo) */}
       {isMobileMenuOpen && (
         <div className="md:hidden mt-2">
           <button

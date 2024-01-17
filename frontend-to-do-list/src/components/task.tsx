@@ -1,4 +1,5 @@
 
+import { updateTask } from '@/api/crud';
 import { useTaskContext } from '@/context/task/task.context';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -22,6 +23,11 @@ const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, t
     router.push('/edit-task')
   }
   
+  async function conclued(){
+    console.log('chamoooouuuu')
+    const response = await updateTask(id, {finished: true})
+    console.log(response)
+  }
   return (
     <div className="bg-gray-100 p-4 rounded shadow-md mb-4">
       <div className="flex justify-between items-center mb-2"
@@ -39,9 +45,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, t
           <button
             title={finished ? 'Desfazer Conclusão' : 'Concluir'}
             className={`text-${finished ? 'green' : 'gray'}-500 hover:text-green-700 focus:outline-none`}
-            onClick={() => console.log('Concluir/Desfazer tarefa:', id)}
+            
           >
-            <BsCheck size={30} /> {/* Aumentando o tamanho do ícone de conclusão */}
+            <BsCheck size={30} onClick={() => conclued()}/> 
           </button>
         </div>
       </div>
