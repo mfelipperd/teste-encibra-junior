@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = async () => {
     try {
       const response = await login({ email, password });
-      console.log(response);
+      console.log(response)
       if (response?.data.accessToken) {
         handleChangeData(response.data.user)
         router.push('/dashboard');

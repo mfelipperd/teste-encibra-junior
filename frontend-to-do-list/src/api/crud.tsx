@@ -66,3 +66,11 @@ export async function login(data:any) {
   }
 }
 
+export async function updateTask(id: string, data: any) {
+  try {
+    const response = await axios.put(`/task/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}

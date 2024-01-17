@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { create, getAll } from '@/api/crud';
+import { create } from '@/api/crud';
 import { useUserContext } from '@/context/user/user.context';
 
 const RegisterPage: React.FC = () => {

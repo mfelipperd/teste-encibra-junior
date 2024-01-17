@@ -1,4 +1,4 @@
-// components/NavigationBar.tsx
+'use client'
 import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 //import { UserContext } from '../contexts/UserContext';

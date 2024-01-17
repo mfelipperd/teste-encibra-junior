@@ -2,10 +2,11 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 
 interface User {
+    [x: string]: any;
     name: string;
     email: string;
     password: string;
-    task?: any;
+    tasks: Array<Object>;
 }
 
 interface UserContextData{
@@ -23,7 +24,8 @@ export const UserProvider = ({children}:UserProviderProps) => {
     const [user, setUser] = useState<User>({
         name: '',
         email:'',
-        password:''
+        password:'',
+        tasks: []
     });
     const handleChangeData = useCallback((data: User) => {
         setUser(data);
