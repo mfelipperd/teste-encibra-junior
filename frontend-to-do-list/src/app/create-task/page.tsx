@@ -6,7 +6,14 @@ export default function CreateTask() {
         <>
         <NavigationBar/>
         <div className="flex h-screen p-5 flex-col items-center justify-center bg-gray-200">
-        <TaskForm />
+        <TaskForm task={{
+                    id: "",
+                    title: "",
+                    description: "",
+                    term: "",
+                    finished: undefined,
+                    user: undefined
+                }} />
         </div>
         </>
     )

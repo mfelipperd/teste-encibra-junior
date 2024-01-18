@@ -1,7 +1,5 @@
 import axios from 'axios';
 import api from './api';
-import { User } from 'next-auth';
-
 
 export async function getAll() {
   try {

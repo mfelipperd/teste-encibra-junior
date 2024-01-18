@@ -4,6 +4,16 @@ import React from 'react';
 import NavigationBar from '@/components/navbar';
 import { useTaskContext } from '@/context/task/task.context';
 import TaskForm from '@/components/task-form';
+interface TaskFormProps {
+  task: {
+    id: string;
+    title: string;
+    description: string;
+    term: string;
+    finished?: boolean;
+    user?: number | undefined;
+  };
+}
 
 
 export default function EditTask() {

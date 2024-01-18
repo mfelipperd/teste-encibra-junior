@@ -13,7 +13,7 @@ interface TaskFormProps {
     description: string;
     term: string;
     finished?: boolean;
-    user: number
+    user?: number
   };
 }
 
@@ -98,7 +98,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
   };
 
   useEffect(() => {
-    if (task) {
+    if (task.id != "") {
       setDescription(task.description);
       setTitle(task.title);
       setTerm(task.term);
