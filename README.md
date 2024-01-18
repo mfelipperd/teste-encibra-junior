@@ -1,4 +1,4 @@
-# Bem vindos as intruções par rodar o todo-list
+# Bem vindos as intruções para rodar o todo-list
 
 O Projeto esta na pasta teste-encibra-junior
 
