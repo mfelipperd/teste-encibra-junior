@@ -11,7 +11,6 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
-import { secretKey } from 'src/app.module';
 
 @Injectable()
 export class UsersService {
@@ -41,12 +40,7 @@ export class UsersService {
     if (!isPasswordValid || !user) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
-
-    const payload = { username: user.email, sub: user.id };
-    const accessToken = this.jwtService.sign(
-      { data: payload },
-      { secret: secretKey },
-    );
+    const accessToken = 'deuruim';
     const result = { accessToken, user };
     return result;
   }
@@ -70,10 +64,7 @@ export class UsersService {
     }
     const newUser = await this.userRepo.save(createUserDto);
     const payload = { username: newUser.email, sub: newUser.id };
-    const accessToken = this.jwtService.sign(
-      { data: payload },
-      { secret: secretKey },
-    );
+    const accessToken = 'deu ruim';
     return { newUser, accessToken };
   }
 
@@ -90,6 +81,16 @@ export class UsersService {
 
   findOneByName(name: string) {
     return this.userRepo.findOneBy({ name });
+  }
+  async findOneByEmail(email: string): Promise<User> {
+    const user = await this.userRepo.findOne({
+      where: { email: email },
+      relations: ['tasks'],
+    });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

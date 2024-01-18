@@ -52,6 +52,9 @@ export class TasksService {
     if (updateTaskDto.finished !== undefined) {
       existingTask.finished = updateTaskDto.finished;
     }
+    if (updateTaskDto.priority !== undefined) {
+      existingTask.priority = updateTaskDto.priority;
+    }
 
     // Salve as alterações no banco de dados
     await this.taskRepo.save(existingTask);

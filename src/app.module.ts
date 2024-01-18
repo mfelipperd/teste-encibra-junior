@@ -6,10 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './tasks/tasks.module';
 import { User } from './users/entities/user.entity';
 import { Task } from './tasks/entities/task.entity';
-import { JwtModule } from '@nestjs/jwt';
 import * as crypto from 'crypto';
-
-export const secretKey = crypto.randomBytes(32).toString('hex');
 
 @Module({
   imports: [
@@ -24,10 +21,6 @@ export const secretKey = crypto.randomBytes(32).toString('hex');
       synchronize: true,
     }),
     UsersModule,
-    JwtModule.register({
-      secret: secretKey,
-      signOptions: { expiresIn: '1d' },
-    }),
     TasksModule,
   ],
   controllers: [AppController],

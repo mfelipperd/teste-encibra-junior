@@ -26,4 +26,6 @@ export class UpdateTaskDto {
   @IsOptional()
   @IsBoolean({ message: 'O campo finished deve ser um booleano.' })
   finished?: boolean;
+
+  priority: number;
 }
