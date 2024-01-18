@@ -28,6 +28,7 @@ Na pasta do frontend, apos ter instalado as dependencias, rode o comando:
 ```bash
 npm run dev
 ```
+o frontend tambem esta funcionando na url <a>teste-encibra-junior.vercel.app<a>
 
 ### CERTIFIQUE-SE QUE AS PORTAS: 3000(FRONTEND), 3001(BACKEND), 5432(BANCO DE DADOS)
 
