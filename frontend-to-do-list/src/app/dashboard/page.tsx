@@ -4,11 +4,11 @@ import NavigationBar from '@/components/navbar';
 import { useUserContext } from '@/context/user/user.context';
 import TaskCard from '@/components/task';
 import { getOne } from '@/api/crud';
-import ReactPaginate from 'react-paginate';
 
 export default function Dashboard() {
     const { user } = useUserContext();
     const [tasks, setTasks]  = useState([])
+
     useEffect(() => {
       const fetchUserData = async () => {
         try {

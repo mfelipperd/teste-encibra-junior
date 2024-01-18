@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { login } from '@/api/crud';
 import { useUserContext } from '@/context/user/user.context';
 import Loading from '@/components/loading';
+import { signIn } from 'next-auth/react';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();

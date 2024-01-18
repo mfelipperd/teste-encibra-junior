@@ -25,12 +25,11 @@ const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, p
     handleChangeData(data);
     router.push('/edit-task')
   }
-  console.log(priority)
   async function conclued(){
     if(!finished){
       await updateTask(id, {finished: true})
     }
-      await updateTask(id, {finished: true})
+      await updateTask(id, {finished: false})
   }
 
   function prioridade(p: number){

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import api from './api';
+import { User } from 'next-auth';
 
 
 export async function getAll() {
@@ -29,10 +30,21 @@ export async function getByName(name: string) {
   }
 }
 
+export async function getByEmail(email: string) {
+  try {
+    const response = await api.post(`/users/email/${email}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 export async function create(data: any) {
+  console.log(data)
   try {
     const response = await api.post('/users', data);
-    console.log(response)
+    
     return response
   } catch (error) {
     console.log(error);
@@ -74,6 +86,7 @@ export async function updateTask(id: string, data: any) {
     console.log(error);
   }
 }
+
 
 export async function removeTask(id:string) {
   try {

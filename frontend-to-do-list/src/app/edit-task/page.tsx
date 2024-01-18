@@ -16,7 +16,7 @@ export default function EditTask() {
   return (
     <>
       <NavigationBar />
-      <div>
+      <div className="flex min-h-screen p-5 flex-col items-center justify-center bg-gray-200">
       <TaskForm task={adjustedTask} />
       </div>
       

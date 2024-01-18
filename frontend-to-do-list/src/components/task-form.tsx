@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { create, createTask, remove, removeTask, updateTask } from '@/api/crud';
+import { createTask, removeTask, updateTask } from '@/api/crud';
 import { useRouter } from 'next/navigation';
 import { useUserContext } from '@/context/user/user.context';
 
@@ -38,32 +38,30 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
       window.alert('algo deu errado faça o login novamente')
       router.push('/login')
       return
-    }
-    const data = {
-      title,
-      description,
-      term,
-      priority,
-      user:user.id
-    };
-    const dataCreate = {
-      title,
-      description,
-      term,
-      finished:false,
-      priority,
-      user:user.id
     };
 
+
     try {
-      console.log(data)
-      console.log(user);
-      createComp ? await createTask(dataCreate) : await updateTask(task.id, data);
+      createComp ? await createTask({
+        title,
+        description,
+        term,
+        finished:false,
+        priority,
+        user:user.id
+      }) : await updateTask(task.id, {
+        title,
+        description,
+        term,
+        finished:false,
+        priority,
+        user:user.id
+      });
       notifySuccess('Tarefa salva com sucesso!');
       setTitle('');
       setDescription('');
       setTerm(null);
-      //router.push('/dashboard')
+      router.push('/dashboard')
     } catch (error) {
       notifyError('Ocorreu um erro ao salvar a tarefa. Por favor, tente novamente.');
     }

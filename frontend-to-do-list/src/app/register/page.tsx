@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { create } from '@/api/crud';
 import { useUserContext } from '@/context/user/user.context';
+import Loading from '@/components/loading';
+import { signIn } from 'next-auth/react';
 
 const RegisterPage: React.FC = () => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { handleChangeData } = useUserContext()
   
   const handleRegister = async () => {
@@ -17,9 +20,9 @@ const RegisterPage: React.FC = () => {
     
     try {
         const response = await create(data);
-        console.log(response)
       if (response?.data) {
-        handleChangeData(response.data)
+        handleChangeData(response.data.newUser)
+        setIsLoading(true);
         router.push('/dashboard');
       } else {
         console.error('Erro ao cadastrar');
@@ -29,7 +32,7 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  return (
+  const registerPageHTML = (
     <div className="min-h-screen flex items-center justify-center bg-white text-black">
       <div className="bg-gray-100 p-8 rounded shadow-md w-full sm:max-w-md">
         <h1 className="text-2xl font-bold mb-4">Cadastro</h1>
@@ -68,6 +71,9 @@ const RegisterPage: React.FC = () => {
       </div>
     </div>
   );
+  const loading = <Loading/>
+  return isLoading?loading:registerPageHTML
+
 };
 
 export default RegisterPage;

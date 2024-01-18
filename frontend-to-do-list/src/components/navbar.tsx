@@ -19,16 +19,22 @@ const NavigationBar: React.FC = () => {
         </Link>
         <div className="hidden md:flex items-center space-x-4">
         <button
+            onClick={() => router.push('/dashboard')}
+            className="hover:underline"
+          >
+            Tarefas
+          </button>
+        <button
             onClick={() => router.push('/create-task')}
             className="hover:underline"
           >
-            Adicionar nova tarefa
+            Adicionar
           </button>
           <button
             onClick={() => router.push('/conclued-tasks')}
             className="hover:underline"
           >
-            Histórico de Tarefas
+            Concluidas
           </button>
 
           {(

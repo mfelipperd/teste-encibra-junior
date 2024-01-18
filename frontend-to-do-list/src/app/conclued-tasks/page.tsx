@@ -27,9 +27,8 @@ export default function ConcluedTasks() {
       <NavigationBar />
       
       <div className="flex min-h-screen p-5 flex-col items-center justify-center bg-gray-200">
-      
-        <div className="bg-white p-8 rounded shadow-md mt-4 flex-grow">
-          <h1 className="text-2xl font-bold mb-4">Lista de Tarefas</h1>
+        <div className="bg-gray-100 p-8 rounded shadow-md mb-4 flex-grow text-black min-w-[330px]">
+          <h1 className="text-2xl font-bold mb-4">Tarefas Concluidas</h1>
           {tasks.filter(task => task.finished === true).map((task) => (
             <TaskCard
               id={task.id}
@@ -41,7 +40,6 @@ export default function ConcluedTasks() {
               {...task}
             />
           ))}
-          
         </div>
       </div>
     </>
