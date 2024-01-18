@@ -2,23 +2,17 @@
 import { updateTask } from '@/api/crud';
 import { useTaskContext } from '@/context/task/task.context';
 import { formatData } from '@/functions/function';
+import { TaskCardProps } from '@/types/interfaces';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { BsPencil, BsCheck } from 'react-icons/bs';
 
-export interface TaskCardProps {
-  id: string;
-  title: string;
-  description: string;
-  finished: boolean;
-  term: string | null;
-  priority: number;
-  user?:string
-}
 
-const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, priority,term }) => {
+
+const TaskCard: React.FC<TaskCardProps> = ({ task, fetchUserData  }) => {
   const { handleChangeData } = useTaskContext();
   const router = useRouter()
+  const { id, title, description, finished, priority ,term } = task
 
   function editCard(){
     const data = {id, title, description, finished, priority ,term}
@@ -26,10 +20,14 @@ const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, p
     router.push('/edit-task')
   }
   async function conclued(){
-    if(!finished){
-      await updateTask(id, {finished: true})
-    }
+    if(finished){
       await updateTask(id, {finished: false})
+      await fetchUserData()
+      return
+    }
+      await updateTask(id, {finished: true })
+      await fetchUserData()
+      return
   }
 
   function prioridade(p: number){
@@ -56,7 +54,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, p
             className={`text-${finished ? 'green' : 'gray'}-500 hover:text-green-700 focus:outline-none`}
             
           >
-            <BsCheck size={30} onClick={() => conclued()}/> 
+            <BsCheck size={30} onClick={conclued}/> 
           </button>
         </div>
       </div>

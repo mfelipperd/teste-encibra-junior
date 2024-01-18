@@ -1,11 +1,13 @@
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { login } from '@/api/crud';
 import { useUserContext } from '@/context/user/user.context';
 import Loading from '@/components/loading';
 
-const LoginPage: React.FC = () => {
+ const LoginPage: React.FC = () => {
     const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,15 +18,43 @@ const LoginPage: React.FC = () => {
     try {
       const response = await login({ email, password });
       if (response?.data.accessToken) {
+        notifySuccess
         handleChangeData(response.data.user)
         setIsLoading(true);
         router.push('/dashboard');
       } else {
         console.error('Credenciais inválidas');
+        notifyError('Credenciais inválidas, Cadastre-se e aproveite o To Do List completo');
       }
     } catch (error) {
       console.error('Erro ao autenticar:');
+      notifyError('Ocorreu um erro ao autenticar. Por favor, tente novamente mais tarde.');
+
     }
+  };
+
+  const notifySuccess = (message: string) => {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
+  const notifyError = (message: string) => {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
  const loginPageHTML = (
@@ -63,6 +93,7 @@ const LoginPage: React.FC = () => {
             </button>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );
@@ -70,5 +101,4 @@ const LoginPage: React.FC = () => {
   return isLoading?loading:loginPageHTML
 };
 
-
-export default LoginPage;
+export default LoginPage
