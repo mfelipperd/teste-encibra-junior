@@ -58,7 +58,7 @@ import Loading from '@/components/loading';
   };
 
  const loginPageHTML = (
-    <div className="min-h-screen flex items-center justify-center bg-white text-black">
+    <div className="min-h-screen flex items-center justify-center bg-gray-200 text-black">
       <div className="bg-gray-100 p-8 rounded shadow-md w-full sm:max-w-md">
         <h1 className="text-2xl font-bold mb-4">Login</h1>
         <form>
