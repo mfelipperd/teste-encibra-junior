@@ -5,12 +5,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'http://localhost:3000', // ou o seu frontend URL
+    origin: [
+      'http://localhost:3000',
+      'https://teste-encibra-junior.vercel.app',
+    ], // ou o seu frontend URL
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   });
 
-  await app.listen(3001);
+  await app.listen(process.env.PORT || 3001);
 }
 
 bootstrap();

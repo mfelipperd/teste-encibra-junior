@@ -1,19 +1,19 @@
 version: '3.9'
 services:  
-  backend:
-    container_name: backend-to-do-list
-    build: .
-    ports:
-      - "3001:3001"
-    environment:
-      - DB_TYPE=postgres
-      - PG_HOST=localhost
-      - PG_USER=root
-      - PG_PASSWORD=root
-      - PG_DB=todolist
-      - PG_PORT=5432
-    depends_on:
-      - db
+  # backend:
+  #   container_name: backend-to-do-list
+  #   build: .
+  #   ports:
+  #     - "3001:3001"
+  #   environment:
+  #     - DB_TYPE=postgres
+  #     - PG_HOST=localhost
+  #     - PG_USER=root
+  #     - PG_PASSWORD=root
+  #     - PG_DB=todolist
+  #     - PG_PORT=5432
+  #   depends_on:
+  #     - db
   db:
     container_name: db
     image: postgres:latest
