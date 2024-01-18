@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { create, updateTask } from '@/api/crud';
+import { create, createTask, remove, removeTask, updateTask } from '@/api/crud';
 import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/context/user/user.context';
 
 interface TaskFormProps {
   task: {
@@ -11,7 +12,8 @@ interface TaskFormProps {
     title: string;
     description: string;
     term: string;
-    finished: boolean;
+    finished?: boolean;
+    user: number
   };
 }
 
@@ -19,36 +21,60 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [term, setTerm] = useState<string | null>(null);
+  const [priority, setPriority] = useState<number>(0)
   const [createComp, setCreate] = useState(true);
+  const [userId, setUserId] = useState<number>()
   const router = useRouter();
+  const { user } = useUserContext();
 
   const handleSubmitEdited = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!title.trim() || !description.trim() || (term && !term.trim())) {
       notifyError('Todos os campos são obrigatórios.');
       return;
     }
-
+    
+    if(!user.id){
+      window.alert('algo deu errado faça o login novamente')
+      router.push('/login')
+      return
+    }
     const data = {
       title,
       description,
       term,
-      finished: task.finished,
+      priority,
+      user:user.id
+    };
+    const dataCreate = {
+      title,
+      description,
+      term,
+      finished:false,
+      priority,
+      user:user.id
     };
 
     try {
-      createComp ? await create(data) : await updateTask(task.id, data);
+      console.log(data)
+      console.log(user);
+      createComp ? await createTask(dataCreate) : await updateTask(task.id, data);
       notifySuccess('Tarefa salva com sucesso!');
       setTitle('');
       setDescription('');
       setTerm(null);
-      router.push('/dashboard')
+      //router.push('/dashboard')
     } catch (error) {
       notifyError('Ocorreu um erro ao salvar a tarefa. Por favor, tente novamente.');
     }
   };
 
+  function deleteTask(){
+    if (window.confirm('Tem certeza de que deseja excluir esta tarefa?')) {
+      removeTask(task.id)
+      router.push('dashboard');
+  }
+  }
   const notifySuccess = (message: string) => {
     toast.success(message, {
       position: 'top-right',
@@ -109,6 +135,20 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
           required
         />
 
+      <label htmlFor="priority" className="text-gray-700 mb-2">
+          Prioridade:
+        </label>
+        <select
+          id="priority"
+          value={priority}
+          onChange={(e) => setPriority(Number(e.target.value))}
+          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full text-black"
+        >
+          <option value={1}>Baixa</option>
+          <option value={2}>Média</option>
+          <option value={3}>Alta</option>
+        </select>
+
         <label htmlFor="term" className="text-gray-700 mb-2 ">
           Prazo (opcional):
         </label>
@@ -119,13 +159,24 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
           onChange={(e) => setTerm(e.target.value)}
           className="border border-gray-300 rounded px-3 py-2 mb-4 w-full text-black"
         />
-
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
-        >
-          {createComp ? 'Adicionar Tarefa' : 'Editar Tarefa'}
-        </button>
+<div className="flex justify-center mt-4">
+    <>
+      <button
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none mr-4"
+      >
+        {createComp?'Adicionar Tarefa':'Editar Tarefa'}
+      </button>
+      <button
+        type="button"
+        className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none ${createComp ? 'hidden' : ''}`}
+        onClick={() => deleteTask()}
+      >
+        Excluir
+      </button>
+    </>
+  
+</div>
       </form>
       <ToastContainer />
     </div>

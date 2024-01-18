@@ -32,6 +32,7 @@ export async function getByName(name: string) {
 export async function create(data: any) {
   try {
     const response = await api.post('/users', data);
+    console.log(response)
     return response
   } catch (error) {
     console.log(error);
@@ -49,7 +50,7 @@ export async function update(id: string, data: any) {
 
 export async function remove(id: string) {
   try {
-    const response = await axios.delete(`/users/${id}`);
+    const response = await api.delete(`/users/${id}`);
     return response.data;
   } catch (error) {
     console.log(error)
@@ -69,6 +70,24 @@ export async function updateTask(id: string, data: any) {
   try {
     const response = await api.patch(`/tasks/${id}`, data);
     return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function removeTask(id:string) {
+  try {
+    const response = await api.delete(`/tasks/${id}`);
+    return response.data;
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+export async function createTask(data: any) {
+  try {
+    const response = await api.post('/tasks', data);
+    return response
   } catch (error) {
     console.log(error);
   }

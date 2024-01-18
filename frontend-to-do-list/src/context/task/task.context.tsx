@@ -6,6 +6,7 @@ export interface Task {
     title: string;
     description: string;
     finished: boolean;
+    priority: number;
     term: string | null;
   }
 
@@ -26,6 +27,7 @@ export interface Task {
         title:'',
         description:'',
         finished:false,
+        priority:0,
         term: ''
     });
 

@@ -25,7 +25,7 @@ const NavigationBar: React.FC = () => {
             Adicionar nova tarefa
           </button>
           <button
-            onClick={() => router.push('/tasks')}
+            onClick={() => router.push('/conclued-tasks')}
             className="hover:underline"
           >
             Histórico de Tarefas
@@ -49,7 +49,7 @@ const NavigationBar: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden mt-2">
           <button
-            onClick={() => router.push('/tasks')}
+            onClick={() => router.push('/conclued-tasks')}
             className="block text-white py-2 px-4 hover:bg-gray-600"
           >
             Histórico de Tarefas

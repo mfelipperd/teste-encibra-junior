@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 
 interface User {
-    [x: string]: any;
+    id?:string
     name: string;
     email: string;
     password: string;
@@ -22,6 +22,7 @@ const UserContext = createContext<UserContextData | undefined>(undefined);
 
 export const UserProvider = ({children}:UserProviderProps) => {
     const [user, setUser] = useState<User>({
+        id:'',
         name: '',
         email:'',
         password:'',

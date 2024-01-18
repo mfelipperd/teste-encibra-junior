@@ -1,6 +1,7 @@
 
 import { updateTask } from '@/api/crud';
 import { useTaskContext } from '@/context/task/task.context';
+import { formatData } from '@/functions/function';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { BsPencil, BsCheck } from 'react-icons/bs';
@@ -11,22 +12,31 @@ export interface TaskCardProps {
   description: string;
   finished: boolean;
   term: string | null;
+  priority: number;
+  user?:string
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, term }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, priority,term }) => {
   const { handleChangeData } = useTaskContext();
   const router = useRouter()
 
   function editCard(){
-    const data = {id, title, description, finished, term}
+    const data = {id, title, description, finished, priority ,term}
     handleChangeData(data);
     router.push('/edit-task')
   }
-  
+  console.log(priority)
   async function conclued(){
-    console.log('chamoooouuuu')
-    const response = await updateTask(id, {finished: true})
-    console.log(response)
+    if(!finished){
+      await updateTask(id, {finished: true})
+    }
+      await updateTask(id, {finished: true})
+  }
+
+  function prioridade(p: number){
+    if(p===1)return 'Baixa'
+    if(p===2)return 'Média'
+    return 'Alta'
   }
   return (
     <div className="bg-gray-100 p-4 rounded shadow-md mb-4">
@@ -52,10 +62,11 @@ const TaskCard: React.FC<TaskCardProps> = ({ id, title, description, finished, t
         </div>
       </div>
       <p className="text-gray-600">{description}</p>
+      <p className="text-gray-600">Prioridade: {prioridade(priority)}</p>
       <p className={`font-bold mt-2 ${finished ? 'text-green-500' : 'text-red-500'}`}>
         {finished ? 'Concluída' : 'Pendente'}
       </p>
-      {term && <p className="text-gray-500 mt-2">Prazo: {term}</p>}
+      {term && <p className="text-gray-500 mt-2">Prazo: {formatData(term)}</p>}
     </div>
   );
 };

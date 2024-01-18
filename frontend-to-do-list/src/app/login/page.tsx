@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login } from '@/api/crud';
 import { useUserContext } from '@/context/user/user.context';
+import Loading from '@/components/loading';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading]=useState(false);
   const { handleChangeData } = useUserContext();
 
   const handleLogin = async () => {
@@ -15,6 +17,7 @@ const LoginPage: React.FC = () => {
       const response = await login({ email, password });
       if (response?.data.accessToken) {
         handleChangeData(response.data.user)
+        setIsLoading(true);
         router.push('/dashboard');
       } else {
         console.error('Credenciais inválidas');
@@ -24,7 +27,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  return (
+ const loginPageHTML = (
     <div className="min-h-screen flex items-center justify-center bg-white text-black">
       <div className="bg-gray-100 p-8 rounded shadow-md w-full sm:max-w-md">
         <h1 className="text-2xl font-bold mb-4">Login</h1>
@@ -63,6 +66,9 @@ const LoginPage: React.FC = () => {
       </div>
     </div>
   );
+  const loading = <Loading />
+  return isLoading?loading:loginPageHTML
 };
+
 
 export default LoginPage;
