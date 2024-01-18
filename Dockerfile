@@ -1,20 +1,20 @@
-# Use uma imagem Node.js como base
-FROM node:14
 
-# Crie o diretório de trabalho no contêiner
-WORKDIR /usr/src/app
+FROM node:18.18.2
 
-# Copie o arquivo package.json e package-lock.json para o diretório de trabalho
+WORKDIR /usr/src/api
+
 COPY package*.json ./
 
-# Instale as dependências
-RUN npm install
+RUN pip install pip==21.3.1
 
-# Copie o restante dos arquivos do projeto
+RUN npm install --quiet --no-optional --no-fund  --loglevel=error
+
+RUN npm install sqlite3 --save
+
 COPY . .
 
-# Exponha a porta em que o servidor está ouvindo
+RUN npm run build
+
 EXPOSE 3001
 
-# Comando para iniciar o aplicativo
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

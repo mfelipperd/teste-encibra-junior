@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './tasks/tasks.module';
 import { User } from './users/entities/user.entity';
 import { Task } from './tasks/entities/task.entity';
-import * as crypto from 'crypto';
 
 @Module({
   imports: [
